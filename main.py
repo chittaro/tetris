@@ -33,6 +33,11 @@ while running:
         elif event.type == KEYDOWN:
             if event.key == K_UP:
                 tet.rotate()
+            elif event.key == K_LEFT:
+                tet.shift(-1)
+            elif event.key == K_RIGHT:
+                tet.shift(1)
 
+    tet.drop()
     py.display.update()
 
