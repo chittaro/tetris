@@ -8,11 +8,11 @@ class Tetromino:
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 20
+        self.drop_wait = 10
         self.reset()
 
     def reset(self):
-        self.grid_pos = [int(MINO_WID / 2) - 2, 1]
+        self.grid_pos = [int(MINO_WID / 2) - 2, 0]
         self.rotations, self.color = self.get_rand_shape()
         self.rot_idx = 0
         self.waited = 0
