@@ -4,8 +4,9 @@ from objects.Mino import Mino
 import random
 
 class Tetromino:
-    def __init__(self, screen, grid):
+    def __init__(self, screen, grid, background):
         self.screen = screen
+        self.background = background
         self.grid = grid
         self.drop_wait = 100
         self.reset()
@@ -16,11 +17,11 @@ class Tetromino:
         self.rot_idx = 0
         self.matrix = self.get_matrix(self.rot_idx, self.grid_pos)
 
-        self.minos = [Mino(self.color, pos) for pos in self.matrix]
+        self.minos = [Mino(self.color, pos, self.screen, self.background) for pos in self.matrix]
 
     def draw(self):
         for m in self.minos:
-            m.draw(self.screen)
+            m.draw()
 
     def rotate(self):
         self.rot_idx = (self.rot_idx + 1) % len(self.rotations)
@@ -28,6 +29,8 @@ class Tetromino:
         for i in range(4):
             new_pos = (self.matrix[i][0], self.matrix[i][1])
             self.minos[i].set_pos(new_pos)
+
+        self.draw()
 
     def collision_check(self):
         pass

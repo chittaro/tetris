@@ -18,10 +18,10 @@ py.display.flip()
 
 # Initialize Grid
 grid = [[None for i in range(MINO_WID)] for i in range(MINO_HGT)]
-print(grid)
 
 # Initialize Tetromino
-tet = Tetromino(screen, grid)
+tet = Tetromino(screen, grid, background)
+tet.draw()
 
 running = True
 while running:
@@ -34,7 +34,5 @@ while running:
             if event.key == K_UP:
                 tet.rotate()
 
-    screen.blit(background, (0, 0))
-    tet.draw()
     py.display.update()
 
