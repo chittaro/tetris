@@ -8,7 +8,7 @@ class Tetromino:
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 50
+        self.drop_wait = 20
         self.reset()
 
     def reset(self):
@@ -24,26 +24,42 @@ class Tetromino:
             m.draw()
 
     def drop(self):
+        # shift tetromino downwards after time interval
         self.waited += 1
         if self.waited >= self.drop_wait:
             self.waited = 0
-            self.grid_pos[1] += 1
-            self.update_and_draw_minos()
+            temp_pos = [self.grid_pos[0], self.grid_pos[1] + 1]
+            # shift downwards if possible
+            if not self.is_colliding(temp_pos, self.rot_idx):
+                self.grid_pos = temp_pos
+                self.update_and_draw_minos()
+            # lock tetromino
+            else:
+                self.lock_tetromino()
 
     def rotate(self):
         temp_rot = (self.rot_idx + 1) % len(self.rotations)
+        # rotate if possible
         if not self.is_colliding(self.grid_pos, temp_rot):
             self.rot_idx = temp_rot
             self.update_and_draw_minos()
         
     def shift(self, delta_x):
         temp_pos = [self.grid_pos[0] + delta_x, self.grid_pos[1]]
+        # shift L or R if possible
         if not self.is_colliding(temp_pos, self.rot_idx):
             print("shift success")
             self.grid_pos = temp_pos
             self.update_and_draw_minos()
 
+    def lock_tetromino(self):
+        # locks tetromino into grid upon drop conflict
+        for m in self.minos:
+            self.grid[m.get_pos()[1]][m.get_pos()[0]] = m
+        self.reset()
+
     def update_and_draw_minos(self):
+        # update mino rects w/ new position/rotation
         matrix = self.get_matrix(self.rot_idx, self.grid_pos)
         for i in range(4):
             new_pos = (matrix[i][0], matrix[i][1])
@@ -51,6 +67,7 @@ class Tetromino:
         self.draw()
 
     def is_colliding(self, pos, rot_idx):
+        # check if any minos are in conflict
         matrix = self.get_matrix(rot_idx, pos)
         for vec in matrix:
             # check wall collision
@@ -64,6 +81,7 @@ class Tetromino:
         return False
 
     def get_rand_shape(self):
+        # generate new tetromino shape
         choice = random.choice(tetromino_attrs)
         return (choice.rotations, choice.color)
 

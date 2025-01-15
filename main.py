@@ -40,4 +40,3 @@ while running:
 
     tet.drop()
     py.display.update()
-

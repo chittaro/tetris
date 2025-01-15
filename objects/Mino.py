@@ -14,6 +14,9 @@ class Mino():
         self.clear()
         self.rect.update((pos[0] * MINO_SIZE, pos[1] * MINO_SIZE), self.dims)
 
+    def get_pos(self):
+        return [int(self.rect.x / MINO_SIZE), int(self.rect.y / MINO_SIZE)]
+
     def draw(self):
         py.draw.rect(self.screen, self.color, self.rect)
 
