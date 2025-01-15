@@ -16,8 +16,10 @@ class Tetromino:
         self.rotations, self.color = self.get_rand_shape()
         self.rot_idx = 0
         self.waited = 0
+        self.is_landed = False
         matrix = self.get_matrix(self.rot_idx, self.grid_pos)
         self.minos = [Mino(self.color, pos, self.screen, self.background) for pos in matrix]
+        self.draw()
 
     def draw(self):
         for m in self.minos:
@@ -35,7 +37,7 @@ class Tetromino:
                 self.update_and_draw_minos()
             # lock tetromino
             else:
-                self.lock_tetromino()
+                self.is_landed = True
 
     def rotate(self):
         temp_rot = (self.rot_idx + 1) % len(self.rotations)
@@ -48,7 +50,6 @@ class Tetromino:
         temp_pos = [self.grid_pos[0] + delta_x, self.grid_pos[1]]
         # shift L or R if possible
         if not self.is_colliding(temp_pos, self.rot_idx):
-            print("shift success")
             self.grid_pos = temp_pos
             self.update_and_draw_minos()
 
@@ -72,11 +73,9 @@ class Tetromino:
         for vec in matrix:
             # check wall collision
             if vec[0] < 0 or vec[0] >= MINO_WID or vec[1] < 0 or vec[1] >= MINO_HGT:
-                print("can't shift: wall collision")
                 return True
             # check locked mino collision
             if self.grid[vec[1]][vec[0]] is not None:
-                print("can't shift: locked collision")
                 return True
         return False
 

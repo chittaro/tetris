@@ -1,7 +1,7 @@
-import os, math, random
 import pygame as py
 from pygame.locals import *
 from objects.Tetromino import Tetromino
+from objects.Matrix import Matrix
 from constants import *
 
 # Initialize game & clock
@@ -16,12 +16,11 @@ background.fill((200, 200, 200))
 screen.blit(background, (0, 0))
 py.display.flip()
 
-# Initialize Grid
-grid = [[None for i in range(MINO_WID)] for i in range(MINO_HGT)]
+# Initialize Matrix (grid)
+matrix = Matrix()
 
 # Initialize Tetromino
-tet = Tetromino(screen, grid, background)
-tet.draw()
+tetromino = Tetromino(screen, matrix.grid, background)
 
 running = True
 while running:
@@ -32,11 +31,16 @@ while running:
             running = False
         elif event.type == KEYDOWN:
             if event.key == K_UP:
-                tet.rotate()
+                tetromino.rotate()
             elif event.key == K_LEFT:
-                tet.shift(-1)
+                tetromino.shift(-1)
             elif event.key == K_RIGHT:
-                tet.shift(1)
+                tetromino.shift(1)
 
-    tet.drop()
+    tetromino.drop()
+    if tetromino.is_landed:
+        tetromino.lock_tetromino()
+        matrix.line_clear()
+
+
     py.display.update()
