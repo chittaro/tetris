@@ -3,22 +3,66 @@ from constants import *
 class Matrix:
     def __init__(self):
         self.grid = [[None] * MINO_WID for i in range(MINO_HGT)]
-        print(self.grid)
             
     def line_clear(self):
+        # erase minos
+        self.clear_minos()
+
         # clear out filled rows
         for r in range(MINO_HGT):
             if None not in self.grid[r]:
-                print(f"full grid on row: {r}")
-                self.clear(r)
+                self.grid[r] = [None] * MINO_WID
 
         # shift rows down
         self.shift_rows()
-                
-    def clear(self, row):
-        for mino in self.grid[row]:
-            mino.clear()
-        self.grid[row] = [None] * 10
+
+        # redraw minos
+        self.draw_minos()
 
     def shift_rows(self):
-        pass
+        # work upwards from bottom
+        for i in range(MINO_HGT - 1, 1, -1):
+            if self.grid[i] == [None] * MINO_WID:
+                continue
+            shift_pos = i
+            while shift_pos + 1 < MINO_HGT and self.grid[shift_pos + 1] == [None] * MINO_WID:
+                shift_pos += 1
+            self.grid[shift_pos] = self.grid[i]
+            if shift_pos - i > 0:
+                self.grid[i] = [None] * MINO_WID
+            self.shift_down_minos(shift_pos, shift_pos - i)
+
+    def shift_down_minos(self, row, delta_y):
+        for mino in self.grid[row]:
+            if mino is not None:
+                mino.shift_pos(0, delta_y)
+
+
+    def clear_row(self, row):
+        for mino in self.grid[row]:
+            if mino is not None:
+                mino.clear()
+
+    def clear_minos(self):
+        for r in range(MINO_HGT):
+            for c in range(MINO_WID):
+                mino = self.grid[r][c]
+                if mino is not None:
+                    mino.clear()
+
+    def draw_minos(self):
+        for r in range(MINO_HGT):
+            for c in range(MINO_WID):
+                mino = self.grid[r][c]
+                if mino is not None:
+                    mino.draw()
+
+    # def draw_row(self, row):
+    #     for mino in self.grid[row]:
+    #         if mino is not None:
+    #             mino.draw()
+
+    # def draw_minos(self, row):
+    #     for mino in self.grid[row]:
+    #         if mino is not None:
+    #             mino.draw()

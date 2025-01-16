@@ -14,6 +14,10 @@ class Mino():
         self.clear()
         self.rect.update((pos[0] * MINO_SIZE, pos[1] * MINO_SIZE), self.dims)
 
+    def shift_pos(self, delta_x, delta_y):
+        self.clear()
+        self.rect.move_ip(delta_x * MINO_SIZE, delta_y * MINO_SIZE)
+
     def get_pos(self):
         return [int(self.rect.x / MINO_SIZE), int(self.rect.y / MINO_SIZE)]
 
