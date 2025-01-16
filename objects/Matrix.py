@@ -9,15 +9,18 @@ class Matrix:
         self.clear_minos()
 
         # clear out filled rows
+        num_clears = 0
         for r in range(MINO_HGT):
             if None not in self.grid[r]:
                 self.grid[r] = [None] * MINO_WID
-
+                num_clears += 1
         # shift rows down
         self.shift_rows()
 
         # redraw minos
         self.draw_minos()
+
+        return num_clears
 
     def shift_rows(self):
         # work upwards from bottom
@@ -37,12 +40,6 @@ class Matrix:
             if mino is not None:
                 mino.shift_pos(0, delta_y)
 
-
-    def clear_row(self, row):
-        for mino in self.grid[row]:
-            if mino is not None:
-                mino.clear()
-
     def clear_minos(self):
         for r in range(MINO_HGT):
             for c in range(MINO_WID):
@@ -56,13 +53,3 @@ class Matrix:
                 mino = self.grid[r][c]
                 if mino is not None:
                     mino.draw()
-
-    # def draw_row(self, row):
-    #     for mino in self.grid[row]:
-    #         if mino is not None:
-    #             mino.draw()
-
-    # def draw_minos(self, row):
-    #     for mino in self.grid[row]:
-    #         if mino is not None:
-    #             mino.draw()
