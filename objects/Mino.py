@@ -21,8 +21,8 @@ class Mino():
     def get_pos(self):
         return [int(self.rect.x / MINO_SIZE), int(self.rect.y / MINO_SIZE)]
 
-    def draw(self):
-        py.draw.rect(self.screen, self.color, self.rect)
+    def draw(self, width=0):
+        py.draw.rect(self.screen, self.color, self.rect, width)
 
     def clear(self):
         self.screen.blit(self.background, self.rect, self.rect)

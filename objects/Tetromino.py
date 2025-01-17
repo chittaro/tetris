@@ -20,12 +20,14 @@ class Tetromino:
         self.is_landed = False
         matrix = self.get_matrix(self.rot_idx, self.grid_pos)
         self.minos = [Mino(self.color, pos, self.screen, self.background) for pos in matrix]
+        self.ghost_minos = []
         # check game over condition
         if self.is_colliding(self.grid_pos, self.rot_idx):
             self.game_over = True
         else:
             self.game_over = False
             self.draw()
+            self.draw_ghost_minos()
 
     def draw(self):
         for m in self.minos:
@@ -58,6 +60,7 @@ class Tetromino:
         if not self.is_colliding(self.grid_pos, temp_rot):
             self.rot_idx = temp_rot
             self.update_and_draw_minos()
+            self.draw_ghost_minos()
         
     def shift(self, delta_x):
         temp_pos = [self.grid_pos[0] + delta_x, self.grid_pos[1]]
@@ -65,6 +68,7 @@ class Tetromino:
         if not self.is_colliding(temp_pos, self.rot_idx):
             self.grid_pos = temp_pos
             self.update_and_draw_minos()
+            self.draw_ghost_minos()
 
     def lock_tetromino(self):
         # locks tetromino into grid upon drop conflict
@@ -106,3 +110,17 @@ class Tetromino:
             matrix.append((x_pos, y_pos))
         return matrix
     
+    def get_ghost_minos(self):
+        temp_pos = [self.grid_pos[0], self.grid_pos[1]]
+        while not self.is_colliding(temp_pos, self.rot_idx):
+            temp_pos[1] += 1
+        temp_pos[1] -= 1
+        matrix = self.get_matrix(self.rot_idx, temp_pos)
+        self.ghost_minos = [Mino(self.color, pos, self.screen, self.background) for pos in matrix]
+
+    def draw_ghost_minos(self):
+        for m in self.ghost_minos:
+            m.clear()
+        self.get_ghost_minos()
+        for m in self.ghost_minos:
+            m.draw(5)
