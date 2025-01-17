@@ -19,7 +19,13 @@ class Tetromino:
         self.is_landed = False
         matrix = self.get_matrix(self.rot_idx, self.grid_pos)
         self.minos = [Mino(self.color, pos, self.screen, self.background) for pos in matrix]
-        self.draw()
+        # check game over condition
+        if self.is_colliding(self.grid_pos, self.rot_idx):
+            self.game_over = True
+        else:
+            self.game_over = False
+            self.draw()
+
 
     def draw(self):
         for m in self.minos:

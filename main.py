@@ -2,8 +2,9 @@ import pygame as py
 from pygame.locals import *
 from objects.Matrix import Matrix
 from objects.Tetromino import Tetromino
-from objects.Text import render_text
+from objects.Text import *
 from constants import *
+import time
 
 # Initialize game & clock
 py.init()
@@ -24,11 +25,9 @@ matrix = Matrix()
 # Initialize Tetromino
 tetromino = Tetromino(screen, matrix.grid, background)
 
-# Initialize score
-score_rect = py.Rect(10, 10, 50, 50)
-score = 0
-render_text(str(score), score_rect, (0, 0, 0), 50, background)
 
+score = 9
+blit_score(score, screen)
 running = True
 while running:
     clock.tick(60)
@@ -44,15 +43,18 @@ while running:
             elif event.key == K_RIGHT:
                 tetromino.shift(1)
 
+    # check game over condition
+    if tetromino.game_over:
+        print("GAME OVER")
+        time.sleep(2)
+        running = False
+
     # shift tetromino
     tetromino.drop()
     if tetromino.is_landed:
         tetromino.lock_tetromino()
         score += matrix.line_clear()
-        screen.blit(background, score_rect, score_rect)
-        render_text(str(score), score_rect, (0, 0, 0), 50, background)
+        blit_score(score, screen)
 
-    # draw text
-    
-
+    # draw display
     py.display.update()
