@@ -53,3 +53,8 @@ class Matrix:
                 mino = self.grid[r][c]
                 if mino is not None:
                     mino.draw()
+
+    def clear_grid(self):
+        for row in self.grid:
+            for i in range(len(row)):
+                row[i] = None

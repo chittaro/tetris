@@ -10,6 +10,9 @@ DARK_GREY = (150, 150, 150)
 RED = (200, 0, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+CYAN = (0, 240, 240)
+YELLOW = (241, 239, 47)
+
 
 class Attributes:
     def __init__(self, rotations, color):
@@ -21,10 +24,10 @@ class Attributes:
 tetromino_attrs = [
     Attributes( #I
         rotations=[[(0,2), (1,2), (2,2), (3,2)], [(2,0), (2,1), (2,2), (2,3)]],
-        color=(0, 240, 240)),
+        color=CYAN),
     Attributes( #O
         rotations=[[(1,1), (2,1), (2,2), (1,2)]],
-        color=(241, 239, 47)),
+        color=YELLOW),
     Attributes( #J
         rotations=[[(0,1), (1,1), (2,1), (2,2)], [(0,2), (1,2), (1,1), (1,0)], [(0,0), (0,1), (1,1), (2,1)], [(1,0), (2,0), (1,1), (1,2)]],
         color=(0, 0, 240)),
