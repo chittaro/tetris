@@ -8,7 +8,7 @@ class Tetromino:
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 10
+        self.drop_wait = 15
         self.reset()
 
     def reset(self):
@@ -25,7 +25,6 @@ class Tetromino:
         else:
             self.game_over = False
             self.draw()
-
 
     def draw(self):
         for m in self.minos:

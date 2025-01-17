@@ -11,7 +11,7 @@ def render_text(text, color, size, pos, screen):
     font_surface = font.render(text, True, color)
     screen.blit(font_surface, un_center_pos(pos, font.size(text)))
 
-def render_with_bg(text, text_color, size, pos, bg_color, screen):
+def text_with_bg(text, text_color, size, pos, bg_color, screen):
     # get text surface
     font = py.font.Font(None, size)
     font_surface = font.render(text, True, text_color)
