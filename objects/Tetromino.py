@@ -9,7 +9,7 @@ class Tetromino:
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 30
+        self.drop_wait = 50
         self.reset()
 
     def reset(self):
@@ -33,9 +33,9 @@ class Tetromino:
 
     def toggle_speedy(self, is_speedy):
         if is_speedy:
-            self.drop_wait = 8
+            self.drop_wait = 5
         else:
-            self.drop_wait = 30
+            self.drop_wait = 50
 
     def update(self):
         self.waited += 1

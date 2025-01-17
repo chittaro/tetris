@@ -5,6 +5,12 @@ MINO_WID = int(WIDTH / MINO_SIZE)
 MINO_HGT = int(HEIGHT / MINO_SIZE)
 STICK_THRESH = 10
 
+GREY = (220, 220, 220)
+DARK_GREY = (150, 150, 150)
+RED = (200, 0, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
 class Attributes:
     def __init__(self, rotations, color):
         self.rotations = rotations

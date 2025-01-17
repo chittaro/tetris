@@ -4,6 +4,7 @@ from objects.Matrix import Matrix
 from objects.Tetromino import Tetromino
 from text_funcs import *
 from constants import *
+from helpers import *
 import time, os
 
 # Initialize game, clock, audio
@@ -18,16 +19,12 @@ music = py.mixer.music.load(os.path.join('Sounds', 'tetris_theme.mp3'))
 py.mixer.music.play(-1)
 
 # Initialize vars
-GREY = (200, 200, 200)
-RED = (200, 0, 0)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-score = 0
-press_time = 0
 move_sound = py.mixer.Sound(os.path.join('Sounds', 'move.mp3'))
 rotate_sound = py.mixer.Sound(os.path.join('Sounds', 'rotate.mp3'))
 clear_sound = py.mixer.Sound(os.path.join('Sounds', 'line_clear.mp3'))
 clear_sound.set_volume(0.2)
+score = 0
+keypress_time = 0
 
 # Initialize & blit background
 background = py.Surface(screen.get_size()).convert()
@@ -67,14 +64,6 @@ while running:
             if event.key == K_DOWN:
                 tetromino.toggle_speedy(False)
 
-    # keys = py.key.get_pressed()
-    # if keys[K_LEFT]:
-    #     if press_time > STICK_THRESH:
-    #         tetromino.shift(-1)
-    # if keys[K_RIGHT]:
-    #     if press_time > STICK_THRESH:
-    #         tetromino.shift(1)
-
     # check game over condition
     if tetromino.game_over:
         text_with_bg(text="GAME OVER", text_color=RED, size=80,
@@ -93,8 +82,9 @@ while running:
             if points > 0:
                 score += points
                 py.mixer.Sound.play(clear_sound)
-            text_with_bg(text=str(score), text_color=BLACK, size=100, 
-                        pos=(50, 50), bg_color=GREY, screen=screen)
 
-    # draw display
+        # draw display
+        draw_lines(screen)
+        text_with_bg(text=str(score), text_color=BLACK, size=100, 
+                            pos=(50, 50), bg_color=GREY, screen=screen)
     py.display.update()
