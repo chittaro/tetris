@@ -3,6 +3,7 @@ HEIGHT = 900
 MINO_SIZE = 50
 MINO_WID = int(WIDTH / MINO_SIZE)
 MINO_HGT = int(HEIGHT / MINO_SIZE)
+STICK_THRESH = 10
 
 class Attributes:
     def __init__(self, rotations, color):

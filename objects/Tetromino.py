@@ -1,14 +1,15 @@
 import pygame as py
 from constants import *
 from objects.Mino import Mino
-import random
+import random, os
 
 class Tetromino:
+
     def __init__(self, screen, grid, background):
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 15
+        self.drop_wait = 30
         self.reset()
 
     def reset(self):
@@ -30,19 +31,26 @@ class Tetromino:
         for m in self.minos:
             m.draw()
 
-    def drop(self):
-        # shift tetromino downwards after time interval
+    def toggle_speedy(self, is_speedy):
+        if is_speedy:
+            self.drop_wait = 8
+        else:
+            self.drop_wait = 30
+
+    def update(self):
         self.waited += 1
-        if self.waited >= self.drop_wait:
-            self.waited = 0
-            temp_pos = [self.grid_pos[0], self.grid_pos[1] + 1]
-            # shift downwards if possible
-            if not self.is_colliding(temp_pos, self.rot_idx):
-                self.grid_pos = temp_pos
-                self.update_and_draw_minos()
-            # lock tetromino
-            else:
-                self.is_landed = True
+
+    def drop(self):
+        # shift tetromino downwards after time interval        
+        self.waited = 0
+        temp_pos = [self.grid_pos[0], self.grid_pos[1] + 1]
+        # shift downwards if possible
+        if not self.is_colliding(temp_pos, self.rot_idx):
+            self.grid_pos = temp_pos
+            self.update_and_draw_minos()
+        # lock tetromino
+        else:
+            self.is_landed = True
 
     def rotate(self):
         temp_rot = (self.rot_idx + 1) % len(self.rotations)
