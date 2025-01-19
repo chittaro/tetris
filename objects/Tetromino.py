@@ -1,7 +1,7 @@
 import pygame as py
 from constants import *
 from objects.Mino import Mino
-import random, os
+import random
 
 class Tetromino:
 
@@ -9,7 +9,6 @@ class Tetromino:
         self.screen = screen
         self.background = background
         self.grid = grid
-        self.drop_wait = 50
         self.reset()
 
     def reset(self):
@@ -18,6 +17,8 @@ class Tetromino:
         self.rot_idx = 0
         self.waited = 0
         self.is_landed = False
+        self.speed = 60
+        self.drop_wait = self.speed
         matrix = self.get_matrix(self.rot_idx, self.grid_pos)
         self.minos = [Mino(self.color, pos, self.screen, self.background) for pos in matrix]
         self.ghost_minos = []
@@ -37,10 +38,14 @@ class Tetromino:
         if is_speedy:
             self.drop_wait = 5
         else:
-            self.drop_wait = 50
+            self.drop_wait = self.speed
 
     def update(self):
         self.waited += 1
+
+    def inc_speed(self):
+        self.speed -= 3
+        self.drop_wait = self.speed
 
     def drop(self):
         # shift tetromino downwards after time interval        
@@ -74,7 +79,6 @@ class Tetromino:
         # locks tetromino into grid upon drop conflict
         for m in self.minos:
             self.grid[m.get_pos()[1]][m.get_pos()[0]] = m
-        self.reset()
 
     def update_and_draw_minos(self):
         # update mino rects w/ new position/rotation

@@ -41,7 +41,8 @@ restart_button = Button("Play Again", YELLOW, DARK_GREY, 80,
 # Initialize game vars
 score = 0
 keypress_time = 0
-game_state = "lobby" # lobby, play, game over 
+game_state = "lobby"
+passed_time = time.time()
 
 # Initialize & blit background
 background = py.Surface(screen.get_size()).convert()
@@ -100,6 +101,11 @@ while running:
 
     # game play state
     elif game_state == "play":
+        # update drop speed
+        if time.time() - passed_time > 20:
+            tetromino.inc_speed()
+            passed_time = time.time()
+
         # shift tetromino
         tetromino.update()
         if tetromino.waited >= tetromino.drop_wait:
@@ -109,6 +115,7 @@ while running:
         if tetromino.is_landed:
             tetromino.lock_tetromino()
             points = matrix.line_clear()
+            tetromino.reset()
             if points > 0:
                 score += points
                 py.mixer.Sound.play(clear_sound)
